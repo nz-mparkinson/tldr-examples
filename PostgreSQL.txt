@@ -1,0 +1,5 @@
+//Database backup
+pg_dump -U db_user -W -F t db_name > /path/to/your/file/dump_name.tar
+
+//Database restore
+pg_restore -d db_name /path/to/your/file/dump_name.tar -c -U db_user
