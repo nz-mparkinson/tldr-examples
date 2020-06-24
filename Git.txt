@@ -31,5 +31,11 @@ Git Commands
 
  * git restore --staged <file>..." to unstage
 
+## Removing file from repo history
+
+ * git filter-branch --force --index-filter "git rm --cached --ignore-unmatch path/to/your/file" --prune-empty --tag-name-filter cat -- --all
+ * git push origin --force --all
+ * git push origin --force --tags
+
 
 
