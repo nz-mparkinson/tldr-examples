@@ -1,0 +1,35 @@
+Git Commands
+=======
+
+## Configure Git user
+
+ * git config --global user.email "user@domain.com"
+ * git config --global user.name "Name"
+ * git config credential.helper store
+
+## Setting up a repo
+
+ * git init
+ * git remote add origin https://github.com/nz-mparkinson/tldr-examples.git
+ * git remote -v
+
+## Get remote repo copy
+
+ * git pull origin master
+
+## Get current status
+
+ * git status
+
+## Commiting changes
+
+ * git add hello_learning.py 
+ * git commit -m "Added PyTest example, cleaned up code"
+ * git push origin master
+
+## Removing from a commit
+
+ * git restore --staged <file>..." to unstage
+
+
+
