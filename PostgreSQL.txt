@@ -1,5 +1,26 @@
-//Database backup
+//Database Backup
 pg_dump -U db_user -W -F t db_name > /path/to/your/file/dump_name.tar
 
-//Database restore
+//Database Restore
 pg_restore -d db_name /path/to/your/file/dump_name.tar -c -U db_user
+
+//Install - Centos 7 Minimal
+yum install mlocate net-tools postgresql postgresql-server postgresql-contrib vim
+postgresql-setup initdb
+/var/lib/pgsql/data/postgresql.conf, change listen_addresses to '*'
+/var/lib/pgsql/data/pg_hba.conf, change allowed hosts to 'all	all	all	192.168.122.0/24	md5'
+firewall-cmd --permanent --zone=trusted --add-source=192.168.122.0/24
+firewall-cmd --permanent --zone=trusted --add-port=5432/tcp
+firewall-cmd --reload
+systemctl enable postgresql
+systemctl start postgresql
+su postgres -
+psql
+\password
+CREATE DATABASE test;
+\connect test
+\q
+exit
+
+
+
