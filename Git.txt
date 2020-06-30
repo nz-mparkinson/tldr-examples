@@ -1,13 +1,18 @@
 Git Commands
 =======
 
-## Configure Git user
+## Configure user
 
  * git config --global user.email "user@domain.com"
  * git config --global user.name "Name"
  * git config credential.helper store
 
-## Setting up a repo
+## Get config
+
+ * git config --list
+ * git config --global --list
+
+## Configure remote repo
 
  * git init
  * git remote add origin https://github.com/nz-mparkinson/tldr-examples.git
@@ -17,25 +22,72 @@ Git Commands
 
  * git pull origin master
 
-## Get current status
+## Get local repo status
 
  * git status
 
-## Commiting changes
+## Get changes from last commit
 
- * git add hello_learning.py 
- * git commit -m "Added PyTest example, cleaned up code"
+ * git diff
+
+## Removing file from current commit
+
+ * git restore --staged Git.txt
+
+## Restoring file from last commit
+
+ * git restore Git.txt
+
+## Commit changes
+
+ * git add Git.txt
+ * git commit -m "Added examples for Git"
  * git push origin master
 
-## Removing from a commit
+## Get all commits
 
- * git restore --staged <file>..." to unstage
+ * git log --all | cat
+
+## Get all commits including changes
+
+ * git log --all -p | cat
+
+## Get all commits including changes that contain a string
+
+ * git log --pickaxe-regex -p --color-words --all -i -S "string" | cat
 
 ## Removing file from repo history
 
- * git filter-branch --force --index-filter "git rm --cached --ignore-unmatch path/to/your/file" --prune-empty --tag-name-filter cat -- --all
+ * git filter-branch --force --index-filter "git rm --cached --ignore-unmatch Git.txt" --prune-empty --tag-name-filter cat -- --all
  * git push origin --force --all
- * git push origin --force --tags
+
+## Removing line/s in file from repo history that contain a string
+
+ * git filter-branch -f --tree-filter "test -f Git.txt && grep -v -e 'string' Git.txt > temp && mv temp Git.txt || echo 'skipping file'" -- --all
+ * git push origin --force --all
+
+## Removing string in file from repo history
+
+ * git filter-branch -f --tree-filter "test -f Git.txt && sed -i 's/string//g' Git.txt || echo 'skipping file'" -- --all
+ * git push origin --force --all
+
+## Rewrite commit Author in repo history
+
+ * git filter-branch --commit-filter '
+        if [ "$GIT_AUTHOR_EMAIL" = "user@domain.com" ]; then
+                GIT_AUTHOR_NAME="Name";
+                GIT_AUTHOR_EMAIL="user@domain.com";
+                git commit-tree "$@";
+        else
+                git commit-tree "$@";
+        fi' HEAD
+ * git push origin --force --all
+
+## Removing backup of changes to repo history created by git filter-branch
+
+ * git for-each-ref --format="delete %(refname)" refs/original | git update-ref --stdin
+ * git reflog expire --expire=now --all
+ * git gc --prune=now
 
 
 
